@@ -17,14 +17,23 @@ public class Utils {
 	public static final int CODE_INDEX = 4, LAT_INDEX = 6, LNG_INDEX = 7;
 	public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
 	
-	public static HashMap<String, LatLong> readCSV(String srcCode,String destCode) throws FileNotFoundException, IOException {
+	/**
+	 * Returns a map of both airport's code(key) and its corresponding Latitude and Longitude (value).
+	 * Takes two airport codes, reads a CSV file, searches them in this file and stores the latitude and longitude of these airport codes in a Map.
+	 * @param srcCode 
+	 * @param destCode
+	 * @return 
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static HashMap<String, LatLong> readDistanceCSV(String srcCode,String destCode) throws FileNotFoundException, IOException {
 		HashMap<String, LatLong> map = new HashMap<>();
 		Resource resource = new ClassPathResource(FILE_NAME);
 		CSVReader csvReader = new CSVReader(new InputStreamReader(resource.getInputStream())); 
         String[] nextRecord; 
        
         while ((nextRecord = csvReader.readNext()) != null) { 
-        	
+        	//If both the airports are already in hashmap, break
         	if(map.size()==2)
         		break;
         	
@@ -36,6 +45,16 @@ public class Utils {
 		return map;
 	}
 	
+	
+	
+	/**
+	 * Calculates the distance in kilometers between two sets of latitude-longitude
+	 * @param srcLat source latitude
+	 * @param srcLng source longitude
+	 * @param dstLat distance latitude
+	 * @param dstLng distance longitude
+	 * @return
+	 */
 	public static int calculateDistanceInKilometer(double srcLat, double srcLng,double dstLat, double dstLng) {
         double latDistance = Math.toRadians(srcLat - dstLat);
         double lngDistance = Math.toRadians(srcLng - dstLng);

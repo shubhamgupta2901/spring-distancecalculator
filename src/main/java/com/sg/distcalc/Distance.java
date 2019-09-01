@@ -1,5 +1,6 @@
 package com.sg.distcalc;
 
+
 public class Distance {
 	
     private final String srcCode;
@@ -28,8 +29,4 @@ public class Distance {
 		return distance;
 	}
 	
-	
-
-
-   
 }
