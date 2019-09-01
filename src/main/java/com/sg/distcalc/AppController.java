@@ -39,6 +39,22 @@ public class AppController {
 		return new Distance(src, dst, -1);
 	}	
 	 
-	
+	/**
+	 * Calculates the rates between two airports
+	 * API: /rates?src=NGP&dst=JBP
+	 * @param src
+	 * @param dst
+	 * @return Rate between two airports
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	@RequestMapping("/rates")
+	public Rate rate (@RequestParam(value="src", defaultValue="NGP") String src, @RequestParam(value="dst", defaultValue="JBP") String dst ) throws FileNotFoundException, IOException {
+		if(src == "" || dst =="" )
+			return new Rate(src,dst,"-1");
+		String rate = Utils.readRatesCSV(src, dst);
+		return new Rate(src,dst,rate);
+			
+	}
 
 }

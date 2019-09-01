@@ -13,8 +13,8 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class Utils {
 	
-	public static final String FILE_NAME = "AirPortcodes.csv";
-	public static final int CODE_INDEX = 4, LAT_INDEX = 6, LNG_INDEX = 7;
+	public static final String CODES_FILE_NAME = "AirPortcodes.csv";
+	public static final String RATES_FILE_NAME = "Rates.csv";
 	public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
 	
 	/**
@@ -27,8 +27,9 @@ public class Utils {
 	 * @throws IOException
 	 */
 	public static HashMap<String, LatLong> readDistanceCSV(String srcCode,String destCode) throws FileNotFoundException, IOException {
+		final int CODE_INDEX = 4, LAT_INDEX = 6, LNG_INDEX = 7;
 		HashMap<String, LatLong> map = new HashMap<>();
-		Resource resource = new ClassPathResource(FILE_NAME);
+		Resource resource = new ClassPathResource(CODES_FILE_NAME);
 		CSVReader csvReader = new CSVReader(new InputStreamReader(resource.getInputStream())); 
         String[] nextRecord; 
        
@@ -43,6 +44,24 @@ public class Utils {
         } 
 
 		return map;
+	}
+	
+	public static String readRatesCSV(String srcCode, String destCode) throws FileNotFoundException, IOException {
+		System.out.println("readRatesCSV" + " | " + srcCode + " | " + destCode);
+		final int SRC_INDEX = 1, DST_INDEX = 2, RATE_INDEX = 3;
+		Resource resource = new ClassPathResource(RATES_FILE_NAME);
+		CSVReader csvReader = new CSVReader (new InputStreamReader(resource.getInputStream()));
+		String [] nextRecord;
+		
+		while ((nextRecord = csvReader.readNext()) != null) { 
+			System.out.println(nextRecord[SRC_INDEX] + " | " + nextRecord[DST_INDEX] + " | " + nextRecord[RATE_INDEX]);
+			if(srcCode.equals(nextRecord[SRC_INDEX]) && destCode.equals(nextRecord[DST_INDEX])) {
+				
+        		return nextRecord[RATE_INDEX];
+        	}
+        } 
+		return "-1";
+		
 	}
 	
 	
